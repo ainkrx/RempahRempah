@@ -1,0 +1,136 @@
+.banner {
+    background-size: cover;
+    background-repeat: repeat-x;
+}
+
+.banner.twoCols {
+    height: 100vh;
+    width: 50%;
+    background-image: url('/assets/banner1.png');
+}
+
+.banner.oneCol {
+    height: 30vh;
+    background-image: url('/assets/banner2.png');
+}
+
+.authFlexContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+    background-color: rgb(33, 37, 41);
+}
+
+.form {
+    padding: 25px 50px;
+    width: 100%;
+    color: white;
+    background-color: rgb(33, 37, 41);
+}
+
+.form #logo, .form h6 {
+    margin-bottom: 25px;
+}
+
+.form #logo {
+    width: 100px;
+}
+
+form .col {
+    margin-bottom: 25px;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+}
+
+.inputWithIconWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0px !important;
+    border: none;
+}
+.inputWithIconWrapper .form-control.textField {
+    border: none;
+}
+.inputWithIconWrapper .picon {
+    height: 30px;
+    width: auto;
+    margin: auto;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+input[type="checkbox"]:checked {
+    accent-color: black;
+    outline: 1px solid white;
+    box-shadow: 0 0 5px white;
+}
+input[type="checkbox"].blackBackground:checked {
+    accent-color: rgb(227, 232, 0);
+}
+input[type="checkbox"].whiteBackground:checked {
+    accent-color: black;
+}
+
+.checkBox {
+    display: flex;
+    align-items: center;
+}
+
+.errorMsg {
+    margin-top: 10px;
+    color: red;
+}
+
+.col a {
+    text-decoration: none;
+}
+.col button {
+    font-weight: bold;
+    margin-top: 5px;
+    background-color: white;
+    color: rgb(33, 37, 41);
+}
+.col button:hover, .col button:active {
+    background-color: rgb(227, 232, 0) !important;
+    color: rgb(33, 37, 41) !important;
+    transition: color 0.5s ease;
+}
+
+.submitCol {
+    margin-bottom: 10px !important;
+}
+
+.modal {
+    top: 30% !important;
+}
+
+.linkedText {
+    margin-top: 15px !important;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+@media (max-width: 992px) {
+    .temp {
+        width: 75% !important;
+    }
+
+    .banner.twoCols {
+        visibility: hidden;
+        width: 0;
+    }
+
+    .authFlexContainer {
+        height: max-content;
+    }
+}

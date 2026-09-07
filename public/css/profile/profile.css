@@ -1,0 +1,141 @@
+.profileBodyContainer {
+    padding: 75px 25px;
+    display: flex;
+    flex-direction: row;
+}
+
+.profileBodyContainer a,
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.profilePicture {
+    width:40%;
+    position:relative;
+    margin:0px auto;
+}
+
+.profileContainer {
+    width: 25vw;
+    min-width: 25vw;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.content {
+    padding: 0px;
+    margin: 0px;
+    background-color: #EFEFEF;
+}
+
+.halfWidth {
+    width: 50%;
+}
+
+.profileButtonIcon {
+    height: auto;
+    width: 28px;
+    margin: auto;
+    padding:2px;
+    border:1px solid grey;
+    border-radius: 50%
+}
+
+#profileLinkHpselected {
+    border:2px solid black;
+    border-radius: 5px;
+}
+
+.profileLinksHPContainer{
+    display:none;
+    margin:auto;
+    margin-bottom:30px;
+}
+
+.updateProfileForm{
+    width:40%;
+}
+
+.editProfilePictureBtn {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    background-color: white;
+    padding: 6px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+.editProfilePictureBtn:hover {
+    background-color: rgb(227, 232, 0);
+    cursor: pointer;
+}
+
+@media(max-width: 992px) {
+    .profileBodyContainer {
+        flex-direction: column;
+        padding: 25px 25px;
+    }
+
+    .profileContainer {
+        width: 100%;
+    }
+
+    .profileLinksHP{
+        display:block;
+    }
+
+    .profileLinksHPContainer{
+        display:flex;
+        width:70%;
+    }
+
+    .profileLinksPCContainer{
+        display:none;   
+    }
+
+    .updateProfileForm{
+        max-width:100%;
+        width:100%;
+    }
+}
+
+@media(max-width: 600px) {
+    .profileContainer {
+        font-size: 12px;
+    }
+
+    .profileContainer .picon{
+        height:16px;
+        width:auto;
+    }
+
+    .profileLinksHPContainer{
+        width:100%;
+    }
+
+    .profileLinkHpContainer{
+        min-width:70px;
+        width:70px;
+    }
+
+    .editProfilePictureBtn {
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        background-color: white;
+        padding: 6px;
+        border-radius: 50%;
+        border: 2px solid black;
+    }
+
+    .profilePicture{
+        margin-bottom:20px;
+        width:30%;
+    }
+}
