@@ -24,7 +24,12 @@ class StepProgressController extends Controller
 
     public function addRecipeToCookingHistory($user_id, $recipe_id){
         $cookingHistory = new CookingHistory;
-        $cookingHistoryTodayExists = CookingHistory::where('user_id', $user_id)->where('recipe_id', $recipe_id)->where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->first();
+        // $cookingHistoryTodayExists = CookingHistory::where('user_id', $user_id)->where('recipe_id', $recipe_id)->where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->first();
+        // postgre menolak operator LIKE di kolom timestamp
+        $cookingHistoryTodayExists = CookingHistory::where('user_id', $user_id)
+            ->where('recipe_id', $recipe_id)
+            ->whereDate('created_at', date('Y-m-d'))
+            ->first();
         // dump("di step : " . (string)$cookingHistoryTodayExists);
         if(!$cookingHistoryTodayExists){
             $cookingHistory->user_id = $user_id;
@@ -84,7 +89,7 @@ class StepProgressController extends Controller
         }
 
         Session::put('recipe_'.$recipe_id, $cookingProgress);
-        
+
         return response()->json([
             'cookingProgress' => Session::get('recipe_'.$recipe_id)
         ]);

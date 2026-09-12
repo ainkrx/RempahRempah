@@ -68,7 +68,12 @@ class ReviewController extends Controller
 
     public function addRecipeToCookingHistory(Request $req){
         $cookingHistory = new CookingHistory;
-        $cookingHistoryTodayExists = CookingHistory::where('user_id', $req->user_id)->where('recipe_id', $req->recipe_id)->where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->first();
+        // $cookingHistoryTodayExists = CookingHistory::where('user_id', $req->user_id)->where('recipe_id', $req->recipe_id)->where('created_at', 'LIKE', '%' . date('Y-m-d') . '%')->first();
+        // postgre menolak operator LIKE di kolom timestamp
+        $cookingHistoryTodayExists = CookingHistory::where('user_id', $req->user_id)
+            ->where('recipe_id', $req->recipe_id)
+            ->whereDate('created_at', date('Y-m-d'))
+            ->first();
         // dump("di review : " . (string)$cookingHistoryTodayExists);
         if(!$cookingHistoryTodayExists){
             $cookingHistory->user_id = $req->user_id;
@@ -86,7 +91,7 @@ class ReviewController extends Controller
             $review->user_id = $req->user_id;
             $review->rating = $req->rating;
             $review->comment = $req->comment;
-    
+
             if ($req->img) {
                 $reviewImg = $req->file('img');
                 $reviewImg->store('public/reviewImages');
@@ -95,9 +100,9 @@ class ReviewController extends Controller
                 $review->img = null;
             }
             $review->save();
-    
+
             $this->addRecipeToCookingHistory($req);
-    
+
             return redirect('recipeDetail/'.$req->recipe_id.'?filter=dateDesc');
         }
         return redirect()->back()->with('error', 'User tidak bisa mereview resep sendiri');

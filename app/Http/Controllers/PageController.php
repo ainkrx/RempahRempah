@@ -212,10 +212,14 @@ class PageController extends Controller
 
         if ($type == 'ingredients') {
             $selected = $req->session()->get('selected_'.$type, []);
-            $results = Ingredient::where('name', 'LIKE', '%'.$query.'%')->whereNotIn('name', $selected)->get();
+            // $results = Ingredient::where('name', 'LIKE', '%'.$query.'%')->whereNotIn('name', $selected)->get();
+            // postgre LIKE case-sensitive
+            $results = Ingredient::whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($query).'%'])->whereNotIn('name', $selected)->get();
         } else if ($type == 'tags') {
             $selected = $req->session()->get('selected_'.$type, []);
-            $results = Tag::where('name', 'LIKE', '%'.$query.'%')->whereNotIn('name', $selected)->get();
+            // $results = Tag::where('name', 'LIKE', '%'.$query.'%')->whereNotIn('name', $selected)->get();
+            // postgre LIKE case-sensitive
+            $results = Tag::whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($query).'%'])->whereNotIn('name', $selected)->get();
         } else {
             $results = Recipe::query();
             if (Auth::check()) {
@@ -237,7 +241,9 @@ class PageController extends Controller
                         ->where('is_verified_by_admin', true)
                         ->where('is_verified_by_ahli_gizi', true);
             }
-            $results = $results->where('name', 'LIKE', '%'.$query.'%')->get();
+            // $results = $results->where('name', 'LIKE', '%'.$query.'%')->get();
+            // postgre LIKE case-sensitive
+            $results = $results->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($query).'%'])->get();
         }
         return response()->json($results);
     }
@@ -330,9 +336,14 @@ class PageController extends Controller
         $name = $req->input('name');
         if ($name) {
             $results->where(function ($query) use ($name) {
-                $query->where('name', 'like', '%'.$name.'%')
+                // $query->where('name', 'like', '%'.$name.'%')
+                //       ->orWhereHas('ingredientHeaders.ingredients', function ($query) use ($name) {
+                //         $query->where('name', 'like', '%'.$name.'%');
+                //     });
+                // postgre LIKE case-sensitive
+                $query->whereRaw('LOWER(recipes.name) LIKE ?', ['%'.strtolower($name).'%'])
                       ->orWhereHas('ingredientHeaders.ingredients', function ($query) use ($name) {
-                        $query->where('name', 'like', '%'.$name.'%');
+                        $query->whereRaw('LOWER(ingredients.name) LIKE ?', ['%'.strtolower($name).'%']);
                     });
             });
         }
@@ -375,7 +386,9 @@ class PageController extends Controller
         }
 
         $filterBy = $req->input('filterBy');
-        $recipes = $results->orderBy('type', 'asc');
+        // $recipes = $results->orderBy('type', 'asc');
+        // postgre urut enum menurut abjad
+        $recipes = $results->orderByRaw("CASE type WHEN 'public' THEN 1 WHEN 'private' THEN 2 WHEN 'exclusive' THEN 3 ELSE 4 END");
         if ($filterBy) {
             if ($filterBy == 'dateAsc') {
                 $recipes = $recipes->orderBy('updated_at', 'asc');
@@ -428,7 +441,9 @@ class PageController extends Controller
         $selected_tags = $req->session()->get('selected_tags', []);
         $default_tags = array_diff($this->tag_all->pluck('name')->toArray(), $selected_tags);
 
-        $matching_tags = Tag::where('name', 'LIKE', '%' . $query . '%')->pluck('name')->toArray();
+        // $matching_tags = Tag::where('name', 'LIKE', '%' . $query . '%')->pluck('name')->toArray();
+        // postgre LIKE case-sensitive
+        $matching_tags = Tag::whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($query).'%'])->pluck('name')->toArray();
         $tags = array_intersect($default_tags, $matching_tags);
         sort($tags);
         return response()->json(['tags' => $tags]);

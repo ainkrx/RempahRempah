@@ -11,6 +11,9 @@ class Bookmark extends Model
 
     public $timestamps = false;
 
+    // laravel meminta id setiap insert, tp PostgreSQL menolak jika tabel tsb tanpa kolom id
+    public $incrementing = false;
+
     public function recipe(){
         return $this->belongsTo(Recipe::class);
     }
