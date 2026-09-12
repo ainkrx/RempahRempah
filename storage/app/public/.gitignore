@@ -1,2 +1,10 @@
 *
 !.gitignore
+!companyAssets
+!companyAssets/**
+!recipeAssets
+!recipeAssets/**
+!reviewImages
+!reviewImages/review[0-9]*.png
+!users
+!users/default_profile_img.png
